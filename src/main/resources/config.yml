@@ -1,0 +1,14 @@
+# XP Bottles plugin by Ori#0004
+# Maximum xp allowed to be withdrawn.
+max-xp: 15000
+# Minimum xp allowed to be withdrawn
+min-xp: 100
+
+Item:
+  Material: EXPERIENCE_BOTTLE
+  Name: '#f953c6XP Bottle (#12c2e9%xp%#f953c6)'
+  Lore:
+    - '&7Right-Click to give yourself x&f%xp%'
+    - '&7experience points!'
+    - ' '
+    - '&7Bottled by: &f%owner%'

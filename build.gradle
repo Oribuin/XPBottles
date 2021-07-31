@@ -1,0 +1,41 @@
+plugins {
+    id 'java'
+    id 'com.github.johnrengelman.shadow' version '7.0.0'
+    id 'org.jetbrains.kotlin.jvm' version '1.5.30-M1'
+}
+
+group "xyz.oribuin.xpbottle"
+version "1.0"
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+compileJava.options.encoding = "UTF-8"
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+
+    maven { url "https://hub.spigotmc.org/nexus/content/repositories/snapshots/" }
+    maven { url "https://repo.rosewooddev.io/repository/public/" }
+    maven { url "https://repo.extendedclip.com/content/repositories/placeholderapi/" }
+}
+
+dependencies {
+    compileOnly 'org.spigotmc:spigot:1.17'
+    implementation 'xyz.oribuin:orilib:1.3.0'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+}
+
+shadowJar {
+    archiveClassifier.set(null)
+    relocate "xyz.oribuin.orilibrary", "${project.group}.libs.cmdlib"
+}
+
+compileKotlin {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+
+tasks.getByName("build").dependsOn("shadowJar")
+

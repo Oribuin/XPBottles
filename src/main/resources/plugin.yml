@@ -1,0 +1,5 @@
+name: XPBottles
+main: xyz.oribuin.xpbottles.XPBottles
+version: '1.0'
+api-version: '1.14'
+author: Oribuin
