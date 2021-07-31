@@ -17,7 +17,7 @@ import xyz.oribuin.xpbottles.manager.MessageManager
     usage = "/bottle <amount>",
     permission = "xpbottle.use",
     playerOnly = false,
-    subCommands = [GiveSub::class]
+    subCommands = [GiveSub::class, ReloadSub::class]
 )
 class BottleCommand(private val plugin: XPBottles) : Command(plugin) {
 
