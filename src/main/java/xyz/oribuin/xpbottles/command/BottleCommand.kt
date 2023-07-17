@@ -56,7 +56,7 @@ class BottleCommand(private val plugin: XPBottles) : Command(plugin) {
         }
 
         // Check if the sender has enough xp to do it
-        if (sender.totalExperience < this.plugin.config.getInt("min-xp")) {
+        if (plugin.getTotalXp(sender) < this.plugin.config.getInt("min-xp")) {
             this.msg.send(sender, "not-enough-xp")
             return
         }
@@ -72,13 +72,13 @@ class BottleCommand(private val plugin: XPBottles) : Command(plugin) {
             return
         }
 
-        if(sender.totalExperience < amount) {
+        if(plugin.getTotalXp(sender) < amount) {
             this.msg.send(sender, "not-enough-xp")
             return
         }
 
         val bottle = this.plugin.createBottle(amount, sender)
-        sender.giveExp(-amount)
+        plugin.setXp(sender, plugin.getTotalXp(sender) -amount)
         this.msg.send(sender, "withdrew-xp", StringPlaceholders.single("xp", plugin.formatNum(amount)))
         if (sender.inventory.firstEmpty() == -1) {
             this.msg.send(sender, "dropped-xp-bottle")

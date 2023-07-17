@@ -24,7 +24,7 @@ class ThrowListener(private val plugin: XPBottles) : Listener {
         val container = itemMeta.persistentDataContainer
 
         val xpAmount = container.get(plugin.key, PersistentDataType.INTEGER) ?: return
-        player.giveExp(xpAmount)
+        plugin.setXp(this.player, this.player.totalExperience + xpAmount)
         item.amount = item.amount - 1
         plugin.getManager(MessageManager::class.java).send(player, "gained-xp", StringPlaceholders.single("xp", plugin.formatNum(xpAmount)))
         this.isCancelled = true
