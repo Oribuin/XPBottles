@@ -3,6 +3,7 @@ package xyz.oribuin.xpbottles
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
 import org.bukkit.command.CommandSender
+import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import org.bukkit.persistence.PersistentDataType
 import xyz.oribuin.orilibrary.OriPlugin
@@ -12,6 +13,7 @@ import xyz.oribuin.xpbottles.command.BottleCommand
 import xyz.oribuin.xpbottles.listener.PickupListener
 import xyz.oribuin.xpbottles.listener.ThrowListener
 import xyz.oribuin.xpbottles.manager.MessageManager
+
 
 class XPBottles : OriPlugin() {
 
@@ -57,6 +59,47 @@ class XPBottles : OriPlugin() {
         meta.lore = this.config.getStringList("Item.Lore").map { HexUtils.colorify(holder.apply(it)) }
         itemStack.itemMeta = meta
         return itemStack
+    }
+
+    private fun getExpAtLevel(level: Int): Int = when {
+        level <= 15 -> 2 * level + 7
+        level <= 30 -> 5 * level - 38
+        else -> 9 * level - 158
+    }
+
+    fun getTotalXp(player: Player): Int {
+        var exp = Math.round(getExpAtLevel(player.level) * player.exp);
+        var currentLevel = player.level;
+
+        while (currentLevel > 0) {
+            currentLevel--;
+            exp += getExpAtLevel(currentLevel);
+        }
+        if (exp < 0) {
+            exp = Integer.MAX_VALUE;
+        }
+        return exp;
+    }
+
+    fun setXp(player: Player, amountToGive: Int) {
+        player.exp = 0f
+        player.level = 0
+        player.totalExperience = 0
+
+        var amount: Int = amountToGive
+        while (amount > 0) {
+            val expToLevel = getExpAtLevel(player.level)
+            amount -= expToLevel
+            if (amount >= 0) {
+                // give until next level
+                player.giveExp(expToLevel)
+            } else {
+                // give the rest
+                amount += expToLevel
+                player.giveExp(amount)
+                amount = 0
+            }
+        }
     }
 
     fun formatNum(num: Int): String = String.format("%,d", num)
