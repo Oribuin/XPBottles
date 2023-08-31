@@ -1,5 +1,6 @@
 name: XPBottles
 main: xyz.oribuin.xpbottles.XPBottles
-version: '1.0'
+version: '@version@'
 api-version: '1.14'
 author: Oribuin
+description: simple xp bottle plugin :)
